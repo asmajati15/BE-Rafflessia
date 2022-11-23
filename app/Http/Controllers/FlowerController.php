@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FlowerController extends Controller
 {
-    public function guzzleGet()
+    /* public function guzzleGet()
     {
         $client = new \GuzzleHttp\Client();
         $request = $client->get('http://testmyapi.com');
@@ -20,19 +20,19 @@ class FlowerController extends Controller
     
         dd($response);
     }
-    // public function guzzlePost()
-    // {
-    //     $fileContent = File::get($filepath);
-    //     $request = $this->client->post($url, [
-    //         'multipart' => [
-    //             [
-    //                 'name' => 'upload',
-    //                 'contents' => $fileContent,
-    //                 'filename' => end(explode('/', $filepath)),
-    //             ],
-    //         ],
-    //     ]);
-    // }
+    public function guzzlePost()
+    {
+        $fileContent = File::get($filepath);
+        $request = $this->client->post($url, [
+            'multipart' => [
+                [
+                    'name' => 'upload',
+                    'contents' => $fileContent,
+                    'filename' => end(explode('/', $filepath)),
+                ],
+            ],
+        ]);
+    } */
     
     public function imageStore(Request $request)
     {
@@ -41,25 +41,21 @@ class FlowerController extends Controller
         ]);
         $image_path = $request->file('image')->store('image', 'public');
 
-        dd("ada");
-        $data = Flower::create([
-            'image' => $image_path,
-        ]);
-
-        return response($data, Response::HTTP_CREATED);
-    }
-
-    public function store()
-    {
         $client = new Client();
         $response = $client->request('POST', 'http://172.16.3.254:5000', [
             'multipart' => [
                 [
-                    'image' => 'image'
+                    'image' => $image_path
                 ]
             ]
         ]);
         echo $response->getStatusCode();
-        // 200
+
+        // dd("ada");
+        // $data = Flower::create([
+        //     'image' => $image_path,
+        // ]);
+
+        // return response($data, Response::HTTP_CREATED);
     }
 }
