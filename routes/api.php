@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/image', [FlowerController::class, 'imageStore'])->name('image.store');
+
+Route::post('/response', [FlowerController::class, 'imageAPI'])->name('image.api');

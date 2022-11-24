@@ -34,6 +34,11 @@ class FlowerController extends Controller
         ]);
     } */
     
+    public function imageAPI()
+    {
+        return response("Sukses");
+    }
+
     public function imageStore(Request $request)
     {
         $this->validate($request, [
@@ -42,14 +47,16 @@ class FlowerController extends Controller
         $image_path = $request->file('image')->store('image', 'public');
 
         $client = new Client();
-        $response = $client->request('POST', 'http://172.16.3.254:5000', [
+        $response = $client->request('POST', 'https://127.0.0.1:8000/api/response', [
             'multipart' => [
                 [
-                    'image' => $image_path
-                ]
-            ]
+                    'name' => 'file',
+                    'contents' => $image_path,
+                ],
+            ],
+            'headers' => ['X-API-Key' => 'abc345']
         ]);
-        echo $response->getStatusCode();
+        return response($response, Response::HTTP_CREATED);
 
         // dd("ada");
         // $data = Flower::create([
